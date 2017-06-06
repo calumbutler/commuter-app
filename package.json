@@ -5,7 +5,8 @@
   "main": "scripts/start.js",
   "scripts": {
     "start": "node scripts/start",
-    "dist": "rm -rf dist;node scripts/build;node scripts/prerender;",
+    "dist": "rm -rf dist;node --use_strict scripts/build;node scripts/prerender;",
+    "build": "rm -rf dist;node --use_strict scripts/build;",
     "lint": "eslint src/js/**/*.js",
     "test": "jest"
   },
@@ -85,6 +86,7 @@
     "react-router": "^3.0.0",
     "react-test-renderer": "^15.4.2",
     "requirejs": "^2.3.2",
+    "resolve-url-loader": "^2.0.2",
     "sass-loader": "^4.1.1",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",

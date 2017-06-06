@@ -73,6 +73,5 @@ Now your running HTTP/2 with automatic HTTPS enabled!! This does not do hot modu
 * [Jest](https://facebook.github.io/jest/)
 * [Enzyme](http://airbnb.io/enzyme/)
 * [ArcGIS JavaScript API](https://js.arcgis.com)
-* [React-Prerender](https://github.com/Robert-W/react-prerender)
 * [Content-Security-Policy Spec](https://www.w3.org/TR/CSP/)
 * [Tutorial on Content-Security-Policy Meta tags](http://www.html5rocks.com/en/tutorials/security/content-security-policy/)

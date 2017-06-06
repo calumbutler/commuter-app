@@ -1,3 +1,4 @@
+"use strict";
 const webpackconfig = require('../config/webpack.prod');
 const reactDomServer = require('react-dom/server');
 const requirejs = require('requirejs');

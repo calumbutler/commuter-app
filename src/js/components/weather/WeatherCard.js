@@ -119,8 +119,8 @@ export default class WeatherCard extends Component {
     let time = this.props.data.time;
     let firstDate = this.props.timeArray[0].time;
     return (
-      <div className='weather__view-card text-center'>
-        <Card>
+      <div className='weather__view-card--container text-center'>
+        <Card className='weather__view-card'>
           <h3>{this._getDay(time, firstDate) + ' ' + this._getTime(time)}</h3>
           <div>
           {this._getUserBikeDaily(this.props.data)}

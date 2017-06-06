@@ -7,7 +7,7 @@ import React from 'react';
 //- For production, config/inline-style.js will inline this into html via html-webpack-plugin
 import 'css/critical.scss';
 import 'css/app.scss';
-import 'css/vendor/rc-slider.scss';
+
 
 //- Lazy load esri css
 

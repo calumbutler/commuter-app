@@ -1,3 +1,4 @@
+"use strict";
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const InlineStylePlugin = require('./inline-style');
@@ -12,7 +13,7 @@ module.exports = {
   entry: path.join(root, 'src/js/main'),
   output: {
     path: path.join(root, 'dist'),
-    filename: 'js/[name].[hash].js',
+    filename: 'js/[name].js',//'js/[name].[hash].js',
     libraryTarget: 'amd'
   },
   resolve: {
@@ -38,7 +39,7 @@ module.exports = {
       use: ExtractTextPlugin.extract(['css-loader', 'postcss-loader', 'sass-loader'])
     }, {
       test: /app\.scss$/,
-      loaders: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader']
+      loaders: ExtractTextPlugin.extract(['css-loader', 'postcss-loader', 'sass-loader'])
     }, {
       test: /\.(jpg|png|svg)$/,
       loader: 'url-loader?limit=25000',
