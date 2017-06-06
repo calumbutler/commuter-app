@@ -1,0 +1,13 @@
+# Ignore dist directory
+dist
+
+# Ignore artifacts and dependencies
+node_modules
+.DS_Store
+coverage
+*.log
+*.swp
+
+# SSL certs
+cert.crt
+cert.key

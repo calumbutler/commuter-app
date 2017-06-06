@@ -1,0 +1,32 @@
+//@import "./node_modules/material-ui-sass/material-ui/components/_card";
+
+.weather__container{
+  height: calc(100% - 250px);
+  .mui-panel:before {
+     content: initial !important;
+     display: initial;
+  }
+}
+.weather__view{
+  overflow-y: hidden;
+  overflow-x: auto;
+  height: calc(100% - 18px);
+}
+.weather__button-container{
+  padding: 0 20px;
+}
+.weather__view-container{
+  overflow-y: hidden;
+  overflow-x: auto;
+  height: calc(100% - 0px);
+}
+.weather__view-card{
+  overflow: hidden;
+  min-width: 240px;
+  min-height: 340px;
+  max-height: 100%;
+  margin: 0 5px;
+}
+.weather__view-card > div{
+  height: 100%;
+}
