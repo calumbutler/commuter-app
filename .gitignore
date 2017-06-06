@@ -1,5 +1,4 @@
 # Ignore dist directory
-dist
 
 # Ignore artifacts and dependencies
 node_modules
