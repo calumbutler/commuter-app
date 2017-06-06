@@ -12,6 +12,7 @@ This project requires [Node.js](https://nodejs.org/en/)
 
 `npm run dist`
 > Generates an optimized build in the dist directory. It uses webpack to transpile, bundle, and minify the src as well as many other things, like inline css and inject hash numbers into html for optimal performance and automated cache-busting. For more info, see [Building - Webpack](#building---webpack).
+There is an error in the macaddress node module. Add a var to index.js line 34. addressess = {}; => var addressess = {};
 
 `npm test`
 > Runs `jest`. Jest configurations are in the `package.json`. It will run in verbose mode with code coverage. You can run `npm test -- -u` if you need to update your snapshots.
