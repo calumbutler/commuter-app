@@ -1,7 +1,10 @@
+//Vendors
 import React, {Component} from 'react';
-import {promptStore} from 'js/components/prompt/PromptStore';
-import {images, days} from 'js/config';
 import {Card} from 'material-ui';
+//Locals
+import {promptStore} from 'js/components/prompt/PromptStore';
+import {images, days, months} from 'js/config';
+//Images
 import bicycleImage from 'images/bicycle.svg';
 import metroImage from 'images/metro.svg';
 
@@ -16,39 +19,50 @@ export default class WeatherCard extends Component {
 
   componentDidMount() {
     // Subscribe to the store for updates
-
   }
 
   componentWillUnmount() {
-
   }
 
   storeDidUpdate = () => {
-
-    if (this.refs){
-      this.setState(promptStore.getState());
-    }
+    this.setState(promptStore.getState());
   };
-
+  /*
+    param {num}
+      multiply then round for percentage
+    return (num)
+  */
   _round = (num) =>{
     return Math.round(num * 100)
   }
-  //get day date and month from api time
+  /*
+    param {num, num}
+      get date for card
+    return (string time message)
+  */
   _getDay = (time, firstDate) =>{
       let date = new Date();
       date.setSeconds(time - firstDate);
 
-      return days[date.getDay()] + ' '+ date.getDate() + '/' + date.getMonth()
+      return days[date.getDay()] + ', ' +  months[date.getMonth()] + ' ' + date.getDate() + 'th'
   }
-  //get day date and month from api time
+  /*
+    param {num}
+      get current selected time for card
+    return (string time message)
+  */
   _getTime = (time) =>{
       let date = new Date();
       date.setSeconds(time);
 
       return  (date.getHours() > 12 ? (date.getHours() - 12) + ':00 pm' : date.getHours() + ':00 am');
   }
-  //check if temperature is within range
-  _withinTemperatureRange = (data) => {
+  /*
+    param {object}
+      check if temperature max and min are within range
+    return (true || false)
+  */
+  _withinTemperatureRangeWeekly = (data) => {
     let maxLess = data.temperatureMax < promptStore.getState().temperatureValues[1] ? true : false;
     let maxGreater = data.temperatureMax > promptStore.getState().temperatureValues[0] ? true : false;
     let minLess = data.temperatureMin < promptStore.getState().temperatureValues[1] ? true : false;
@@ -56,35 +70,26 @@ export default class WeatherCard extends Component {
 
     return (maxLess && maxGreater && minLess && minGreater)
   }
-  //check if users values are within range for biking
-  _getUserBikeWeekly = (data) => {
-    let withinTempRange = this._withinTemperatureRange(data);
-    let belowPreciptationValue = promptStore.getState().perciptationValue > (data.precipProbability * 100);
-    let message = withinTempRange && belowPreciptationValue ?
-    (<div>
-      <h3>Bike</h3>
-      <img className="bike-image" src={bicycleImage} alt="app-logo" />
-    </div>) :
-    (<div>
-      <h3>Metro</h3>
-      <img className="bike-image" src={metroImage} alt="app-logo" />
-    </div>);
-
-    return message
-  }
-
+  /*
+    param {object}
+      check if temperature is within range
+    return (jsx bike message || jsx metro message)
+  */
   _withinTemperatureRangeDaily(data){
     let temperatureLess = data.temperature < promptStore.getState().temperatureValues[1] ? true : false;
     let temperatureGreater = data.temperature > promptStore.getState().temperatureValues[0] ? true : false;
 
     return (temperatureLess && temperatureGreater)
   };
+  /*
+    param {object}
+      check if users values are within range for biking
+    return (jsx bike message || jsx metro message)
+  */
+  _getUserCommuteMessage = (data) => {
+    let withinTempRange = (this.props.view === 'Weekly')? this._withinTemperatureRangeWeekly(data) : this._withinTemperatureRangeDaily(data);
+    let belowPreciptationValue = promptStore.getState().preciptationValue >= (data.precipProbability * 100);
 
-  //check if user should bike today
-  _getUserBikeDaily = (data) => {
-
-    let withinTempRange = this._withinTemperatureRangeDaily(data);
-    let belowPreciptationValue = promptStore.getState().perciptationValue >= (data.precipProbability * 100);
     let message = withinTempRange && belowPreciptationValue ?
     (<div>
       <h3>Bike</h3>
@@ -98,15 +103,18 @@ export default class WeatherCard extends Component {
     return message
   }
 
-  _renerWeekly = () => {
+  render () {
+
     let time = this.props.data.time;
     let firstDate = this.props.timeArray[0].time;
+    let timeDateMessage = this.props.view === 'Weekly' ? this._getDay(time, firstDate) : this._getDay(time, firstDate) + ' ' + this._getTime(time);
+
     return (
       <div className='weather__view-card text-center'>
         <Card>
-          <h3>{this._getDay(time, firstDate)}</h3>
+          <h3>{timeDateMessage}</h3>
           <div>
-          {this._getUserBikeWeekly(this.props.data)}
+          {this._getUserCommuteMessage(this.props.data)}
           </div>
           <img height='256' width='256' src={images[this.props.data.icon]}/>
           <h4>{this.props.data.summary}</h4>
@@ -114,33 +122,5 @@ export default class WeatherCard extends Component {
         </Card>
       </div>
     );
-  }
-  _renerToday = () => {
-    let time = this.props.data.time;
-    let firstDate = this.props.timeArray[0].time;
-    return (
-      <div className='weather__view-card--container text-center'>
-        <Card className='weather__view-card'>
-          <h3>{this._getDay(time, firstDate) + ' ' + this._getTime(time)}</h3>
-          <div>
-          {this._getUserBikeDaily(this.props.data)}
-          </div>
-
-          <img height='256' width='256' src={images[this.props.data.icon]}/>
-          <h4>{this.props.data.summary}</h4>
-          <p>{this._round(this.props.data.precipProbability) + '% chance of rain'}</p>
-        </Card>
-      </div>
-    );
-  }
-
-  render () {
-
-    if(this.props.view === 'Weekly'){
-
-      return this._renerWeekly()
-    }else{
-      return this._renerToday()
-    }
   }
 }

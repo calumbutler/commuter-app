@@ -1,4 +1,4 @@
-//Libraries
+//Vendor
 import React, {Component} from 'react';
 import {Input, Form, Button} from 'muicss/react';
 import {TimePicker} from 'material-ui';
@@ -28,24 +28,32 @@ export default class Prompt extends Component {
   storeDidUpdate = () => {
     this.setState(promptStore.getState());
   }
-
+  //update temperatures in promptStore
   _updateTemperatureValues = (values) => {
     promptActions.updateTemperatureValues(values)
   }
-
-  _updatePerciptationValue = (value) => {
-    promptActions.updatePerciptationValue(value)
+  /*
+    param {num}
+      update p
+    return (array of )
+  */
+  _updatePreciptationValue = (value) => {
+    promptActions.updatePreciptationValue(value)
   }
-
+  /*
+    param {num, event}
+      update time in stores
+    return (array of )
+  */
   _updateTime(index, e){
-
     let hour = e.getHours();
     promptActions.updateTimes(index, hour);
     weatherActions.updateTimes(index, hour);
   }
 
   render () {
-    let nbDrop = this.state.perciptationValue * 5;
+    //create a random array for rain drops [[left, top],....]
+    let nbDrop = this.state.preciptationValue * 5;
     let rainCoordsArray = [];
     for(let i=1; i<nbDrop; i++) {
         var dropLeft = randRange(0,1600);
@@ -71,18 +79,18 @@ export default class Prompt extends Component {
           <Range defaultValue={this.state.temperatureValues} min={-40} max={130} onChange={this._updateTemperatureValues} />
           <ul className='prompt__slider--text-size flex flex-row justify-between'>
             <li>
-            {this.state.temperatureValues[0] + ' f'}
+            {this.state.temperatureValues[0] + ' °F'}
             </li>
             <li>
-            {this.state.temperatureValues[1] + ' f'}
+            {this.state.temperatureValues[1] + ' °F'}
             </li>
           </ul>
         </div>
         <div className='basic-slider--container flex flex-column'>
-          <h3 className='prompt__header--text-size text-center'>Preciptation Level</h3>
-          <Slider defaultValue={this.state.perciptationValue} min={0} max={100}  onAfterChange={this._updatePerciptationValue} onChange={this._updatePerciptationValue}/>
+          <h3 className='prompt__header--text-size text-center'>Chance of Rain</h3>
+          <Slider defaultValue={this.state.preciptationValue} min={0} max={100}  onAfterChange={this._updatePreciptationValue} onChange={this._updatePreciptationValue}/>
           <ul className='prompt__slider--text-size flex flex-row justify-around'>
-            <li>{this.state.perciptationValue + '%'}</li>
+            <li>{this.state.preciptationValue + '%'}</li>
           </ul>
         </div>
         <div className='flex flex-column'>

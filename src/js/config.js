@@ -27,6 +27,7 @@ export const viewOptions = {
   ui: { components: ['logo', 'attribution'] }
 };
 
+
 //image lookup for cards
 export const images = {
     'clear-day': sunImage,
@@ -42,12 +43,14 @@ export const images = {
 };
 // day lookup for date format
 export const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+//months lookup
+export const months =  ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
 let latitude = 38.9072;
 let longitude = 77.0369
 //defaults for store
 export const defaultTemperature = [32, 90];
-export const defaultTime = [8, 5];
+export const defaultTime = [8, 17];
 export const defaultPrecipitation = 0;
 
 export const urls = {

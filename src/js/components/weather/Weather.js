@@ -1,11 +1,13 @@
-import {getApiData} from 'js/utils/api';
-import {viewOptions} from 'js/config';
-import WeatherCard from 'js/components/weather/WeatherCard';
+//Vendor
+import {Button, Tab} from 'muicss/react'
 import React, {Component} from 'react';
+//Locals
 import {weatherStore} from 'js/components/weather/WeatherStore';
 import {promptStore} from 'js/components/prompt/PromptStore';
 import {weatherActions} from 'js/components/weather/WeatherActions';
-import {Button, Tab} from 'muicss/react'
+import WeatherCard from 'js/components/weather/WeatherCard';
+import {getApiData} from 'js/utils/api';
+import {viewOptions} from 'js/config';
 
 export default class Body extends Component {
   constructor(props){
@@ -14,42 +16,53 @@ export default class Body extends Component {
 		weatherStore.listen(this.storeDidUpdate.bind(this));
 	}
 
+  /*
+    get api data when the component mounts
+  */
   componentDidMount() {
     // Subscribe to the store for updates
     let apiData = getApiData('darkSky');
-    let data = {}
-
+    //requet api data
     apiData.onreadystatechange = function(request){
+
         if(request.target.readyState === 4){
-          data = JSON.parse(request.target.response);
-          weatherActions.initialize(data);
+          let data = JSON.parse(request.target.response);
+          weatherActions.initialize(data); //initialize store
         }
     };
 
   }
 
   storeDidUpdate = () => {
-    this.setState(weatherStore.getState());
+    this.setState(weatherStore.getState());//triggers re-render when store updates
   }
-
+  /*
+    param {array}
+      return an array of filtered data based on selected times
+    return (array of )
+  */
   _formatDayData = (hourly) =>{
-    let timeNow = new Date().getTime();
-    let userSelectedHours = weatherStore.getState().times;
 
-    let newHoursArray = hourly.filter((hourData, index) => {
+    let userSelectedHours = weatherStore.getState().times;
+    //user array.filter to get unique array
+    let filteredHoursArray = hourly.filter((hourData, index) => {
+        //get time object for hoursData
         let time = new Date();
         time.setSeconds(hourData.time);
+        //check if time has been selcted by user
         if((userSelectedHours.indexOf(time.getHours()) > -1)){
           return hourData;
         }
     });
 
-    return newHoursArray
+    return filteredHoursArray;
   }
 
   render () {
+    //set data for hourly and daily if store has been initiated
     let hourly = this.state.init ? this._formatDayData(this.state.darkSkyData.hourly.data) : [];
     let daily = this.state.init ? this.state.darkSkyData.daily.data : [];
+    //set display state for views
     let displayToday = this.state.view === 'Today' ? 'flex': 'none';
     let displayWeekly = this.state.view === 'Weekly' ? 'flex': 'none';
 
@@ -63,7 +76,6 @@ export default class Body extends Component {
           <div key={'today'} ref={'today'} className={'weather__view flex flex-row justify-between'} style={{display: displayToday}}>
             {
                 hourly.map((data, index) => {
-                  console.log(index)
                   return(<WeatherCard key={'today-' + data.time} ref={'today' + index} timeArray={hourly} data={data} index={index} view={'Today'}/>)
                 })
             }
@@ -71,7 +83,6 @@ export default class Body extends Component {
           <div key='weekly' ref={'weekly'} className={'weather__view flex flex-row justify-between'} style={{display: displayWeekly}}>
             {
                 daily.map((data, index) => {
-
                   return(<WeatherCard key={'weekly-' + index} ref={'weekly' + index} timeArray={daily} data={data} index={index} view={'Weekly'}/>)
                 })
             }

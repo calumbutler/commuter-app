@@ -1,9 +1,9 @@
-//import react libraries
+//Vendor
 import React, {Component} from 'react';
 import {Router, Route, IndexRoute, hashHistory} from 'react-router';
-import {MuiThemeProvider} from 'material-ui';
+import {MuiThemeProvider} from 'material-ui'; //needed to wrap app for material-ui components
 
-//import internal components
+//Locals
 import Weather from 'js/components/weather/Weather';
 import Prompt from 'js/components/prompt/Prompt';
 import Header from 'js/components/Header';

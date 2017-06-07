@@ -9,8 +9,8 @@ class PromptActions {
   updateTemperatureValues(newTemperatureValues){
     return newTemperatureValues;
   }
-  updatePerciptationValue(newPerciptationValue){
-    return newPerciptationValue
+  updatePreciptationValue(newPreciptationValue){
+    return newPreciptationValue
   }
   updateTimes(index, newTime){
     let time = {index: index, newTime}

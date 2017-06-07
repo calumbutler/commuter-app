@@ -1,4 +1,5 @@
 /*eslint-disable */
+//Locals
 import {promptActions} from 'js/components/prompt/PromptActions';
 import {dispatcher} from 'js/dispatcher';
 import {defaultTemperature, defaultTime, defaultPrecipitation} from 'js/config';
@@ -7,27 +8,26 @@ class PromptStore {
 	constructor () {
     this.init = false
     this.temperatureValues = defaultTemperature; //low, high
-    this.perciptationValue = 0;
+    this.preciptationValue = defaultPrecipitation;
     this.times = defaultTime;
 		this.bindListeners({
 			initialize: promptActions.initialize,
       updateTemperatureValues: promptActions.updateTemperatureValues,
-      updatePerciptationValue: promptActions.updatePerciptationValue,
+      updatePreciptationValue: promptActions.updatePreciptationValue,
       updateTimes: promptActions.updateTimes
 		});
 	}
 
-	initialize(darkSkyData){
+	initialize(){
     this.init = true;
 	}
   updateTemperatureValues(newTemperatureValues){
     this.temperatureValues = newTemperatureValues;
   }
-  updatePerciptationValue(newPerciptationValue){
-    this.perciptationValue = newPerciptationValue
+  updatePreciptationValue(newPreciptationValue){
+    this.preciptationValue = newPreciptationValue
   }
   updateTimes(time){
-
     this.times[time.index] = time.newTime;
   }
 }
